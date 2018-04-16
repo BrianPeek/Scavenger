@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.ProjectOxford.Vision.Contract;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CameraBehavior : MonoBehaviour
@@ -23,6 +24,8 @@ public class CameraBehavior : MonoBehaviour
 
 	private void Update()
 	{
+		if(Input.GetKeyDown(KeyCode.Escape))
+			SceneManager.LoadScene("Title");
 		
 		if(last != webCamTexture.videoRotationAngle)
 		{
