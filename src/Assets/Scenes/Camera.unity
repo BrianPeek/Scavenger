@@ -483,10 +483,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2042677365}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45fa82415cf46aa4885d8a73439837f7, type: 3}
+  m_Script: {fileID: 11500000, guid: b3fe2c88cc2c157409efc4722d9a2088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rawImage: {fileID: 701529286}
+  image: {fileID: 701529286}
+  imageParent: {fileID: 2042677370}
+  imageFitter: {fileID: 701529287}
 --- !u!114 &2042677367
 MonoBehaviour:
   m_ObjectHideFlags: 0
