@@ -285,13 +285,13 @@ Prefab:
     - target: {fileID: 114808667926009490, guid: 75027384890c56d488e42c0164aca6dc,
         type: 2}
       propertyPath: Text
-      value: items
+      value: leaderboard
       objectReference: {fileID: 0}
     - target: {fileID: 114808667926009490, guid: 75027384890c56d488e42c0164aca6dc,
         type: 2}
       propertyPath: BackgroundImage
       value: 
-      objectReference: {fileID: 21300000, guid: ef040452b9d799f459e8e7c378299fce,
+      objectReference: {fileID: 21300000, guid: 215a012e9eb86d745b8610909abf9778,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75027384890c56d488e42c0164aca6dc, type: 2}
