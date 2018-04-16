@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1060956071}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &668761671
@@ -332,7 +332,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2042677366}
+      - m_Target: {fileID: 1336553958}
         m_MethodName: StartSnapPhoto
         m_Mode: 1
         m_Arguments:
@@ -379,6 +379,62 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1060956071}
   m_CullTransparentMesh: 0
+--- !u!1 &1336553957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1336553959}
+  - component: {fileID: 1336553958}
+  - component: {fileID: 1336553960}
+  m_Layer: 0
+  m_Name: CameraScripts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1336553958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1336553957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87cf54f8b44854044ada0a05934fe8f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+--- !u!4 &1336553959
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1336553957}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.081638, y: -2.6178343, z: -0.18501057}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1336553960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1336553957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3fe2c88cc2c157409efc4722d9a2088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 701529286}
+  imageParent: {fileID: 2042677370}
+  imageFitter: {fileID: 701529287}
 --- !u!1 &1750632076
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,6 +445,7 @@ GameObject:
   - component: {fileID: 1750632079}
   - component: {fileID: 1750632078}
   - component: {fileID: 1750632077}
+  - component: {fileID: 1750632080}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -456,6 +513,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1750632080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1750632076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87cf54f8b44854044ada0a05934fe8f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
 --- !u!1 &2042677365
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,7 +536,6 @@ GameObject:
   - component: {fileID: 2042677369}
   - component: {fileID: 2042677368}
   - component: {fileID: 2042677367}
-  - component: {fileID: 2042677366}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -475,20 +543,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2042677366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2042677365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3fe2c88cc2c157409efc4722d9a2088, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  image: {fileID: 701529286}
-  imageParent: {fileID: 2042677370}
-  imageFitter: {fileID: 701529287}
 --- !u!114 &2042677367
 MonoBehaviour:
   m_ObjectHideFlags: 0
