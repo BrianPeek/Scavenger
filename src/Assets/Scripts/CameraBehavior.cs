@@ -1,13 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Microsoft.ProjectOxford.Vision.Contract;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CameraBehavior : MonoBehaviour
 {
-
-	WebCamTexture webCamTexture;
 	public RawImage rawImage;
+
+	private WebCamTexture webCamTexture;
 	private int last;
 	
 	void Start() 
@@ -32,10 +35,21 @@ public class CameraBehavior : MonoBehaviour
 
 	public void StartSnapPhoto()
 	{
-		StartCoroutine(SnapPhoto());
+		StartCoroutine(SnapPhoto(async tex =>
+		{
+			webCamTexture.Stop();
+			rawImage.texture = tex;
+			rawImage.material.mainTexture = tex;
+
+			byte[] pngBuff = tex.EncodeToPNG();
+			MemoryStream ms = new MemoryStream(pngBuff);
+			AnalysisResult result = await Cognitive.CheckImage(ms);
+			foreach(var t in result.Tags)
+				Debug.Log($"{t.Confidence}: {t.Name}");
+		}));
 	}
 
-	private IEnumerator SnapPhoto()
+	private IEnumerator SnapPhoto(Action<Texture2D> callback)
 	{
 		yield return new WaitForEndOfFrame();
 
@@ -43,6 +57,6 @@ public class CameraBehavior : MonoBehaviour
 		photo.SetPixels(webCamTexture.GetPixels());
 		photo.Apply();
 
-		byte[] bytes = photo.EncodeToPNG();
+		callback(photo);
 	}
 }
