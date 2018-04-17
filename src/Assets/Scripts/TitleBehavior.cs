@@ -30,6 +30,8 @@ public class TitleBehavior : MonoBehaviour
 			result => 
 				{
 					string displayName = result?.InfoResultPayload?.AccountInfo?.TitleInfo?.DisplayName;
+					var displayNameText = GameObject.Find("DisplayName").gameObject.GetComponent<Text>();
+					displayNameText.text = displayName;
 
 					Debug.Log($"User '{displayName}' logged in");
 
