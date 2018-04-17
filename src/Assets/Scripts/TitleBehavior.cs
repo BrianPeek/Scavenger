@@ -41,7 +41,6 @@ public class TitleBehavior : MonoBehaviour
 
 			error => Debug.Log("Not logged in: " + error.GenerateErrorReport())
 		);
-
 #endif
 	}
 
@@ -59,8 +58,8 @@ public class TitleBehavior : MonoBehaviour
 			};
 
 			PlayFabClientAPI.UpdateUserTitleDisplayName(userReq,
-				result2 => Debug.Log($"User '{result2.DisplayName}' saved"),
-				error2 => Debug.Log("Failed updating user: " + error2.GenerateErrorReport())
+				result => Debug.Log($"User '{result.DisplayName}' saved"),
+				error => Debug.Log("Failed updating user: " + error.GenerateErrorReport())
 			);
 
 			Animation a = enterNameDialog.GetComponent<Animation>();
@@ -68,7 +67,6 @@ public class TitleBehavior : MonoBehaviour
 			a.Play();
 		}
 	}
-
 
 	// Update is called once per frame
 	void Update ()
