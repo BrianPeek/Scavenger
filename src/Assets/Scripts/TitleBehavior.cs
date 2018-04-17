@@ -1,36 +1,74 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using PlayFab;
+﻿using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TitleBehavior : MonoBehaviour
 {
+	private GameObject enterNameDialog;
+
 	// Use this for initialization
 	void Start () 
 	{
-		//PlayFabSettings.TitleId = "A246";
+		GameObject canvas = GameObject.Find("Canvas");
+		enterNameDialog = canvas.transform.Find("EnterNameDialog").gameObject;
 
 #if UNITY_ANDROID
 		LoginWithAndroidDeviceIDRequest req = new LoginWithAndroidDeviceIDRequest
 		{
 			AndroidDeviceId = SystemInfo.deviceUniqueIdentifier,
-			CreateAccount = true
+			CreateAccount = true,
+			InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+			{
+				GetUserAccountInfo = true
+			}
 		};
-		PlayFabClientAPI.LoginWithAndroidDeviceID(req, OnLoginSuccess, OnLoginFailure);
+
+		PlayFabClientAPI.LoginWithAndroidDeviceID(req, 
+			result => 
+				{
+					string displayName = result?.InfoResultPayload?.AccountInfo?.TitleInfo?.DisplayName;
+
+					Debug.Log($"User '{displayName}' logged in");
+
+					if(string.IsNullOrEmpty(displayName))
+					{
+						Animation a = enterNameDialog.GetComponent<Animation>();
+						a.Play();
+					}
+				},
+
+			error => Debug.Log("Not logged in: " + error.GenerateErrorReport())
+		);
+
 #endif
 	}
 
-	private void OnLoginSuccess(LoginResult result)
+	public void EnterNameOkOnClick()
 	{
-		Debug.Log("Logged in");
+		GameObject nameText = GameObject.Find("NameText");
+		Text textComponent = nameText.GetComponent<Text>();
+		string text = textComponent.text;
+
+		if(!string.IsNullOrEmpty(text))
+		{
+			UpdateUserTitleDisplayNameRequest userReq = new UpdateUserTitleDisplayNameRequest
+			{
+				DisplayName = text
+			};
+
+			PlayFabClientAPI.UpdateUserTitleDisplayName(userReq,
+				result2 => Debug.Log($"User '{result2.DisplayName}' saved"),
+				error2 => Debug.Log("Failed updating user: " + error2.GenerateErrorReport())
+			);
+
+			Animation a = enterNameDialog.GetComponent<Animation>();
+			a.clip = a.GetClip("DialogExit");
+			a.Play();
+		}
 	}
 
-	private void OnLoginFailure(PlayFabError error)
-	{
-		Debug.Log("Not logged in - " + error.GenerateErrorReport());
-	}
 
 	// Update is called once per frame
 	void Update ()
@@ -47,3 +85,16 @@ public class TitleBehavior : MonoBehaviour
 		SceneManager.LoadScene("Leaderboard");
 	}
 }
+
+/*
+		UpdatePlayerStatisticsRequest req = new UpdatePlayerStatisticsRequest();
+		req.Statistics = new List<StatisticUpdate>
+		{
+			new StatisticUpdate
+			{
+				StatisticName = "Score", 
+				Value = 1
+			}
+		};
+		PlayFabClientAPI.UpdatePlayerStatistics(req, OnStatisticSuccss, OnStatisticError);
+*/
