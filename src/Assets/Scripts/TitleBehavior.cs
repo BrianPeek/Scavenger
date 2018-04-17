@@ -1,4 +1,5 @@
-﻿using PlayFab;
+﻿using System.Collections.Generic;
+using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -31,6 +32,17 @@ public class TitleBehavior : MonoBehaviour
 					string displayName = result?.InfoResultPayload?.AccountInfo?.TitleInfo?.DisplayName;
 
 					Debug.Log($"User '{displayName}' logged in");
+
+		//UpdatePlayerStatisticsRequest req2 = new UpdatePlayerStatisticsRequest();
+		//req2.Statistics = new List<StatisticUpdate>
+		//{
+		//	new StatisticUpdate
+		//	{
+		//		StatisticName = "Score", 
+		//		Value = 1
+		//	}
+		//};
+		//PlayFabClientAPI.UpdatePlayerStatistics(req2, x => {}, y => {});
 
 					if(string.IsNullOrEmpty(displayName))
 					{
@@ -83,16 +95,3 @@ public class TitleBehavior : MonoBehaviour
 		SceneManager.LoadScene("Leaderboard");
 	}
 }
-
-/*
-		UpdatePlayerStatisticsRequest req = new UpdatePlayerStatisticsRequest();
-		req.Statistics = new List<StatisticUpdate>
-		{
-			new StatisticUpdate
-			{
-				StatisticName = "Score", 
-				Value = 1
-			}
-		};
-		PlayFabClientAPI.UpdatePlayerStatistics(req, OnStatisticSuccss, OnStatisticError);
-*/
