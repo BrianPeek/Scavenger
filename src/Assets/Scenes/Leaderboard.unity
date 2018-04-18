@@ -285,7 +285,7 @@ Prefab:
     - target: {fileID: 224310520469561882, guid: 75027384890c56d488e42c0164aca6dc,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 283.2102
+      value: 282.80493
       objectReference: {fileID: 0}
     - target: {fileID: 114808667926009490, guid: 75027384890c56d488e42c0164aca6dc,
         type: 2}
@@ -295,6 +295,32 @@ Prefab:
     - target: {fileID: 114808667926009490, guid: 75027384890c56d488e42c0164aca6dc,
         type: 2}
       propertyPath: BackgroundImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 215a012e9eb86d745b8610909abf9778,
+        type: 3}
+    - target: {fileID: 224966864736410314, guid: 75027384890c56d488e42c0164aca6dc,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114808667926009490, guid: 75027384890c56d488e42c0164aca6dc,
+        type: 2}
+      propertyPath: PreviousScene
+      value: Title
+      objectReference: {fileID: 0}
+    - target: {fileID: 224310520469561882, guid: 75027384890c56d488e42c0164aca6dc,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224940573801960862, guid: 75027384890c56d488e42c0164aca6dc,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114518998162306200, guid: 75027384890c56d488e42c0164aca6dc,
+        type: 2}
+      propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 215a012e9eb86d745b8610909abf9778,
         type: 3}
@@ -329,7 +355,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 31839810}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.ProjectOxford.Vision.Contract;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraBehavior : MonoBehaviour
 {
@@ -20,5 +21,10 @@ public class CameraBehavior : MonoBehaviour
 			foreach(string t in result.Description.Tags)
 				Debug.Log($"{t}");
 		}));
+	}
+
+	public void BackButtonOnClick()
+	{
+		SceneManager.LoadScene("Title");
 	}
 }

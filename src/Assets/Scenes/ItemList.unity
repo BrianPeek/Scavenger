@@ -226,6 +226,11 @@ Prefab:
       propertyPath: Text
       value: items
       objectReference: {fileID: 0}
+    - target: {fileID: 114808667926009490, guid: 75027384890c56d488e42c0164aca6dc,
+        type: 2}
+      propertyPath: PreviousScene
+      value: TitleScene
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75027384890c56d488e42c0164aca6dc, type: 2}
   m_IsPrefabAsset: 0
