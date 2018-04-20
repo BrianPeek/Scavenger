@@ -72,13 +72,16 @@ public class TitleBehavior : MonoBehaviour
 			};
 
 			PlayFabClientAPI.UpdateUserTitleDisplayName(userReq,
-				result => Debug.Log($"User '{result.DisplayName}' saved"),
+				result => 
+				{
+					Debug.Log($"User '{result.DisplayName}' saved");
+					Animation a = enterNameDialog.GetComponent<Animation>();
+					a.clip = a.GetClip("DialogExit");
+					a.Play();
+				},
 				error => Debug.Log("Failed updating user: " + error.GenerateErrorReport())
 			);
 
-			Animation a = enterNameDialog.GetComponent<Animation>();
-			a.clip = a.GetClip("DialogExit");
-			a.Play();
 		}
 	}
 
