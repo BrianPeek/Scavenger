@@ -14,10 +14,10 @@ MonoBehaviour:
   TitleId: A246
   DeveloperSecretKey: 598OQYBF5DJD9XQUBBF5E89EXFDHNAXR389NUB5QND6AETFQRH
   ProductionEnvironmentUrl: .playfabapi.com
-  RequestType: 2
+  RequestType: 0
   RequestTimeout: 2000
   RequestKeepAlive: 1
-  CompressApiData: 0
+  CompressApiData: 1
   LogLevel: 12
   LoggerHost: 
   LoggerPort: 0

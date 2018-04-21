@@ -33,7 +33,7 @@ public class TitleBehavior : MonoBehaviour
 					var displayNameText = GameObject.Find("DisplayName").gameObject.GetComponent<Text>();
 					displayNameText.text = displayName;
 
-					Debug.Log($"User '{displayName}' logged in");
+					Debug.Log($"User '{displayName}' logged in with session {result?.SessionTicket}");
 
 		//UpdatePlayerStatisticsRequest req2 = new UpdatePlayerStatisticsRequest();
 		//req2.Statistics = new List<StatisticUpdate>

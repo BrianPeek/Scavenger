@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{4CFFDA30-0E63-039E-0DCA-DAC117CE2649}</ProjectGuid>
+    <ProjectGuid>{CD8C9303-404B-FB8D-6B9B-21988D5CAC0A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -165,13 +165,13 @@
     <None Include="Assets\PlayFabSdk\link.xml" />
     <None Include="Assets\Fonts\OFL.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Unity/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Unity/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Unity/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -369,10 +369,10 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ProjectOxford.Vision">
-      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Assets/Plugins/Microsoft.ProjectOxford.Vision.dll</HintPath>
+      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Unity/Assets/Plugins/Microsoft.ProjectOxford.Vision.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:/Projects/Microsoft/GameDev/Scavenger/src/Unity/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
