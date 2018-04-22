@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net.Http;
 using Newtonsoft.Json;
-using PlayFab;
 using ScavengerServer;
 using UnityEngine;
 using UnityEngine.UI;

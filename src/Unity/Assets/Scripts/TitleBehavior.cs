@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PlayFab;
+﻿using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,58 +11,59 @@ public class TitleBehavior : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		GameObject canvas = GameObject.Find("Canvas");
+		enterNameDialog = GameObject.Find("Canvas").transform.Find("EnterNameDialog").gameObject;
 
-		enterNameDialog = canvas.transform.Find("EnterNameDialog").gameObject;
-
-#if UNITY_ANDROID
-		LoginWithAndroidDeviceIDRequest req = new LoginWithAndroidDeviceIDRequest
+		if(string.IsNullOrEmpty(Globals.SessionTicket))
 		{
-			AndroidDeviceId = SystemInfo.deviceUniqueIdentifier,
-			CreateAccount = true,
-			InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+#if UNITY_ANDROID
+			LoginWithAndroidDeviceIDRequest req = new LoginWithAndroidDeviceIDRequest
 			{
-				GetUserAccountInfo = true
-			}
-		};
-
-		PlayFabClientAPI.LoginWithAndroidDeviceID(req, 
-			result => 
+				AndroidDeviceId = SystemInfo.deviceUniqueIdentifier,
+				CreateAccount = true,
+				InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
 				{
-					Globals.SessionTicket = result?.SessionTicket;
+					GetUserAccountInfo = true
+				}
+			};
 
-					string displayName = result?.InfoResultPayload?.AccountInfo?.TitleInfo?.DisplayName;
-					var displayNameText = GameObject.Find("DisplayName").gameObject.GetComponent<Text>();
-					displayNameText.text = displayName;
-					Button startButton = GameObject.Find("StartButton").GetComponent<Button>();
-					Button leaderboardButton = GameObject.Find("LeaderboardButton").GetComponent<Button>();
-
-					startButton.interactable = true;
-					leaderboardButton.interactable = true;
-
-					Debug.Log($"User '{displayName}' logged in with session {Globals.SessionTicket}");
-
-		//UpdatePlayerStatisticsRequest req2 = new UpdatePlayerStatisticsRequest();
-		//req2.Statistics = new List<StatisticUpdate>
-		//{
-		//	new StatisticUpdate
-		//	{
-		//		StatisticName = "Score", 
-		//		Value = 1
-		//	}
-		//};
-		//PlayFabClientAPI.UpdatePlayerStatistics(req2, x => {}, y => {});
-
-					if(string.IsNullOrEmpty(displayName))
+			PlayFabClientAPI.LoginWithAndroidDeviceID(req, 
+				result => 
 					{
-						Animation a = enterNameDialog.GetComponent<Animation>();
-						a.Play();
-					}
-				},
+						Globals.SessionTicket = result?.SessionTicket;
+						Globals.DisplayName = result?.InfoResultPayload?.AccountInfo?.TitleInfo?.DisplayName;
 
-			error => Debug.Log("Not logged in: " + error.GenerateErrorReport())
-		);
+						UpdateUI(true);
+
+						Debug.Log($"User '{Globals.DisplayName}' logged in with session {Globals.SessionTicket}");
+
+						if(string.IsNullOrEmpty(Globals.DisplayName))
+						{
+							Animation a = enterNameDialog.GetComponent<Animation>();
+							a.Play();
+						}
+					},
+
+				error => Debug.Log("Not logged in: " + error.GenerateErrorReport())
+			);
+		}
+		else
+		{
+			UpdateUI(true);
+		}
 #endif
+	}
+
+	private void UpdateUI(bool loggedIn)
+	{
+		Button startButton = GameObject.Find("StartButton").GetComponent<Button>();
+		Button leaderboardButton = GameObject.Find("LeaderboardButton").GetComponent<Button>();
+		Text displayNameText = GameObject.Find("DisplayName").gameObject.GetComponent<Text>();
+
+		startButton.interactable = loggedIn;
+		leaderboardButton.interactable = loggedIn;
+
+		if(loggedIn)
+			displayNameText.text = Globals.DisplayName;
 	}
 
 	public void EnterNameOkOnClick()
