@@ -45,12 +45,12 @@ public class TitleBehavior : MonoBehaviour
 
 				error => Debug.Log("Not logged in: " + error.GenerateErrorReport())
 			);
+#endif
 		}
 		else
 		{
 			UpdateUI(true);
 		}
-#endif
 	}
 
 	private void UpdateUI(bool loggedIn)

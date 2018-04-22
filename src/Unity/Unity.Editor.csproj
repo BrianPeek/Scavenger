@@ -5,9 +5,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3A848AB7-9891-EDDA-D555-BF184C2F81F4}</ProjectGuid>
+    <ProjectGuid>{C17F48D3-964E-E97C-3D2E-966F7A6C6D93}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Unity.TextMeshPro.Editor</AssemblyName>
+    <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
@@ -250,6 +250,15 @@
     </Reference>
     <Reference Include="UnityEditor.Networking">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b1/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TestRunner">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b1/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b1/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b1/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Timeline">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b1/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
@@ -643,51 +652,52 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Unity.csproj">
+      <Project>{CF118143-7E37-744F-BE45-3F55345FEC40}</Project>
+      <Name>Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
+      <Project>{3A848AB7-9891-EDDA-D555-BF184C2F81F4}</Project>
+      <Name>Unity.TextMeshPro.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.PackageManagerUI.Editor.csproj">
+      <Project>{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}</Project>
+      <Name>Unity.PackageManagerUI.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
       <Project>{07A21C90-D344-AE1A-8456-9910C203B41A}</Project>
       <Name>Unity.TextMeshPro</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\DropdownOptionListDrawer.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\EditorCoroutine.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\GlyphInfoDrawer.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\KerningPairDrawer.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\SpriteInfoDrawer.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_BaseShaderGUI.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_BitmapShaderGUI.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_ColorGradientAssetMenu.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_ColorGradientEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_DropdownEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_EditorPanel.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_EditorUtility.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_FontAssetEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_InputFieldEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_MeshRendererEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_PackageUtilities.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_PostBuildProcessHandler.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_ProjectTextSettings.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_ResourcesLoader.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_SDFShaderGUI.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_SettingsEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_SpriteAssetEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_SpriteAssetImporter.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_SpriteAssetMenu.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_StyleAssetMenu.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_StyleSheetEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_SubMesh_Editor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_SubMeshUI_Editor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_UiEditorPanel.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMP_UIStyleManager.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMPro_ContextMenus.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMPro_CreateObjectMenu.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMPro_EditorShaderUtilities.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMPro_FontAssetCreatorWindow.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMPro_FontPlugin.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMPro_SDFMaterialEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMPro_SortingLayerHelper.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMPro_TextContainerEditor.cs" />
-    <Compile Include="C:\ProgramData\Unity\cache\packages\packages.unity.com\com.unity.textmeshpro@1.2.2\Scripts\Editor\TMPro_TexturePostProcessor.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\PlayFabEditor.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\ProgressBar.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\SubMenuComponent.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\TitleDataEditor.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\TitleDataViewer.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\TitleInternalDataEditor.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\TitleInternalDataViewer.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorAuthenticate.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorDataMenu.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorHeader.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorHelpMenu.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorMenu.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorSDKTools.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorSettings.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorToolsMenu.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\ISerializer.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\PlayFabEditorApi.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\PlayFabEditorHttp.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\PlayFabEditorModels.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\SimpleJson.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\EditorCoroutine.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabEditorDataService.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabEditorHelper.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabEditorUtils.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabEditorVersion.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabGuiFieldHelper.cs" />
+    <Compile Include="Assets\PlayFabSdk\Shared\Editor\PlayFabHelp.cs" />
+    <Compile Include="Assets\PlayFabSdk\Shared\Models\Editor\MakeSharedSettingsObj.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\OFL.txt" />
