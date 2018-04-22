@@ -160,6 +160,7 @@
     <Compile Include="Assets\Scripts\CameraBehavior.cs" />
     <Compile Include="Assets\Scripts\Cognitive.cs" />
     <Compile Include="Assets\Scripts\DeviceCameraController.cs" />
+    <Compile Include="Assets\Scripts\ItemListBehavior.cs" />
     <Compile Include="Assets\Scripts\LeaderboardBehavior.cs" />
     <Compile Include="Assets\Scripts\TitleBehavior.cs" />
     <None Include="Assets\PlayFabSdk\link.xml" />

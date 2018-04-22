@@ -7,7 +7,7 @@ using PlayFab.ServerModels;
 namespace ScavengerServer
 {
 	class PlayFab
-    {
+	{
 		internal static async Task<string> AuthenticateUserAsync(string session, TraceWriter log)
 		{
 			if(string.IsNullOrEmpty(session))
@@ -32,5 +32,5 @@ namespace ScavengerServer
 				return null;
 			}
 		}
-    }
+	}
 }

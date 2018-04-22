@@ -21,14 +21,10 @@ public class LeaderboardBehavior : MonoBehaviour
 			result => 
 			{
 				GameObject prefab = Resources.Load("Prefabs/LeaderboardRow") as GameObject;
-				var container = GameObject.Find("LeaderboardContainer");
-				int row = 0;
-				int rowSize = 140;
+				var container = GameObject.Find("ItemList");
 
 				foreach(var li in result.Leaderboard)
 				{
-					Vector2 startPosition = new Vector2(0, 0);
-
 					GameObject item = Instantiate(prefab);
 
 					var displayName = item.transform.Find("DisplayName").gameObject.GetComponent<Text>();
@@ -37,17 +33,8 @@ public class LeaderboardBehavior : MonoBehaviour
 					displayName.text = li.DisplayName;
 					score.text = li.StatValue.ToString();
 
-					item.transform.SetParent(container.transform);
+					item.transform.SetParent(container.transform, false);
 					item.SetActive(true);
-					var rectTransform = item.GetComponent<RectTransform>();
-					if (rectTransform)
-					{
-						rectTransform.anchorMin = new Vector2(0f, 1f);
-						rectTransform.anchorMax = rectTransform.anchorMin;
-						rectTransform.localScale = Vector3.one;
-						rectTransform.anchoredPosition = new Vector2(startPosition.x, startPosition.y - (row * rowSize));
-					}
-					row++;
 				}
 			},
 			error => Debug.Log("Error getting leaderboard: " + error.GenerateErrorReport())
