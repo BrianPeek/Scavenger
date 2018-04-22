@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class TitleBehavior : MonoBehaviour
 	void Start () 
 	{
 		GameObject canvas = GameObject.Find("Canvas");
+
 		enterNameDialog = canvas.transform.Find("EnterNameDialog").gameObject;
 
 #if UNITY_ANDROID
@@ -29,11 +31,18 @@ public class TitleBehavior : MonoBehaviour
 		PlayFabClientAPI.LoginWithAndroidDeviceID(req, 
 			result => 
 				{
+					Globals.SessionTicket = result?.SessionTicket;
+
 					string displayName = result?.InfoResultPayload?.AccountInfo?.TitleInfo?.DisplayName;
 					var displayNameText = GameObject.Find("DisplayName").gameObject.GetComponent<Text>();
 					displayNameText.text = displayName;
+					Button startButton = GameObject.Find("StartButton").GetComponent<Button>();
+					Button leaderboardButton = GameObject.Find("LeaderboardButton").GetComponent<Button>();
 
-					Debug.Log($"User '{displayName}' logged in with session {result?.SessionTicket}");
+					startButton.interactable = true;
+					leaderboardButton.interactable = true;
+
+					Debug.Log($"User '{displayName}' logged in with session {Globals.SessionTicket}");
 
 		//UpdatePlayerStatisticsRequest req2 = new UpdatePlayerStatisticsRequest();
 		//req2.Statistics = new List<StatisticUpdate>
@@ -92,7 +101,7 @@ public class TitleBehavior : MonoBehaviour
 
 	public void StartGame()
 	{
-		SceneManager.LoadScene("Camera");
+		SceneManager.LoadScene("ItemList");
 	}
 
 	public void Leaderboard()

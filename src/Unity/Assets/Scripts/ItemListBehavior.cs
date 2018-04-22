@@ -1,26 +1,42 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http;
+using Newtonsoft.Json;
+using PlayFab;
+using ScavengerServer;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemListBehavior : MonoBehaviour {
 
 	// Use this for initialization
-	void Start ()
+	async void Start ()
 	{
-		string[] x = new string[] { "text1", "text2", "text3", "text1", "text2", "text3" };
+		DailyItems items;
+
+		using(var http = new HttpClient())
+		{
+			//http.BaseAddress = new Uri("https://scavengersrv.azurewebsites.net/api/");
+			http.BaseAddress = new Uri("http://localhost:7071/api/");
+			string result = await http.GetStringAsync($"GetDailyItems/{Globals.SessionTicket}");
+			DailyItems[] di = JsonConvert.DeserializeObject<DailyItems[]>(result);
+			items = di[0];
+		}
+
+		Text dateText = GameObject.Find("DateText").GetComponent<Text>();
+		dateText.text = DateTime.Parse(items.Date).ToShortDateString();
 
 		GameObject prefab = Resources.Load("Prefabs/ItemRow") as GameObject;
 		var container = GameObject.Find("ItemList");
 
-		//foreach(var li in result.Leaderboard)
-		for(int i = 0; i < x.Length; i++)
+		foreach(Item i in items.Items)
 		{
 			GameObject item = Instantiate(prefab);
 
 			var itemName = item.transform.Find("ItemName").gameObject.GetComponent<Text>();
 
-			itemName.text = x[i];
+			itemName.text = i.Name;
 
 			item.transform.SetParent(container.transform, false);
 			item.SetActive(true);
