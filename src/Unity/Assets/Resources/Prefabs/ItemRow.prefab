@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 222528254693521934}
   - component: {fileID: 114850363425472330}
   - component: {fileID: 114854378918096714}
+  - component: {fileID: 114346672097596518}
+  - component: {fileID: 114138374163318168}
   m_Layer: 5
   m_Name: ItemRow
   m_TagString: Untagged
@@ -63,6 +65,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114138374163318168
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728782759666526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf070d2212f306b4fbf37868dbb08918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114346672097596518
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728782759666526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbb571ea8057a945b76dd900bb01975, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114486940521705262
 MonoBehaviour:
   m_ObjectHideFlags: 1

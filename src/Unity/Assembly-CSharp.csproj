@@ -161,9 +161,13 @@
     <Compile Include="Assets\Scripts\Cognitive.cs" />
     <Compile Include="Assets\Scripts\DeviceCameraController.cs" />
     <Compile Include="Assets\Scripts\Globals.cs" />
-    <Compile Include="Assets\Scripts\Item.cs" />
+    <Compile Include="Assets\Scripts\ItemClickHandler.cs" />
     <Compile Include="Assets\Scripts\ItemListBehavior.cs" />
     <Compile Include="Assets\Scripts\LeaderboardBehavior.cs" />
+    <Compile Include="Assets\Scripts\ListItem.cs" />
+    <Compile Include="Assets\Scripts\Models\DailyItems.cs" />
+    <Compile Include="Assets\Scripts\Models\FoundItem.cs" />
+    <Compile Include="Assets\Scripts\Models\Item.cs" />
     <Compile Include="Assets\Scripts\TitleBehavior.cs" />
     <None Include="Assets\PlayFabSdk\link.xml" />
     <None Include="Assets\Fonts\OFL.txt" />

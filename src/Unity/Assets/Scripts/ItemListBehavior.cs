@@ -30,6 +30,8 @@ public class ItemListBehavior : MonoBehaviour {
 		foreach(Item i in items.Items)
 		{
 			GameObject item = Instantiate(prefab);
+			ListItem objItem = item.GetComponent<ListItem>();
+			objItem.item = i;
 
 			var itemName = item.transform.Find("ItemName").gameObject.GetComponent<Text>();
 
