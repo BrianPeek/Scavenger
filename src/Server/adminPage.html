@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Scavenger admin interface</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-brand">
+                Scavenger admin interface
+            </div>
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div id="datainput">
+            <div class="form-group">
+                <label for="date">Date: </label>
+                <input type="text" id="date" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="name1">Name 1:</label>
+                <input type="text" id="name1" placeholder="Clock" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="tags1">Tags 1: </label>
+                <input type="text" id="tags1" placeholder="clock" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="name2">Name 2: </label>
+                <input type="text" id="name2" placeholder="Shoe" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="tags2">Tags 2: </label>
+                <input type="text" id="tags2" placeholder="shoe" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="name3">Name 3: </label>
+                <input type="text" id="name3" placeholder="Cup" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="tags3">Tags 3: </label>
+                <input type="text" id="tags3" placeholder="cup" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="name4">Name 4: </label>
+                <input type="text" id="name4" placeholder="Hot dog" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="tags4">Tags 4: </label>
+                <input type="text" id="tags4" placeholder="hotdog,hot,dog" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="name5">Name 5: </label>
+                <input type="text" id="name5" placeholder="Computer mouse" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="tags5">Tags 5: </label>
+                <input type="text" id="tags5" placeholder="mouse" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type="button" value="Submit" onclick="submit()" class="btn btn-primary" />
+            </div>
+        </div>
+        <div id="datainputsuccess" style="display:none">Input OK!</div>
+    </div>
+    <!-- /.container -->
+    <!-- jQuery Version 1.11.1 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#date').val(formatDate(new Date()));
+        });
+
+        function submit() {
+            let host = window.location.hostname;
+
+            const data = `{
+                                        "date": "${$('#date').val()}",
+                                        Constants.ItemsCollectionName: [
+                                            {
+                                                  "id": "${createGuid()}",
+                                                "name": "${$('#name1').val()}",
+                                                "tags": ${JSON.stringify($('#tags1').val().split(","))}
+                                            },
+                                            {
+                                                  "id": "${createGuid()}",
+                                                "name": "${$('#name2').val()}",
+                                                "tags": ${JSON.stringify($('#tags2').val().split(","))}
+                                            },
+                                            {
+                                                  "id": "${createGuid()}",
+                                                "name": "${$('#name3').val()}",
+                                                "tags": ${JSON.stringify($('#tags3').val().split(","))}
+                                            },
+                                            {
+                                                  "id": "${createGuid()}",
+                                                "name": "${$('#name4').val()}",
+                                                "tags": ${JSON.stringify($('#tags4').val().split(","))}
+                                            },
+                                            {
+                                                  "id": "${createGuid()}",
+                                                "name": "${$('#name5').val()}",
+                                                "tags": ${JSON.stringify($('#tags5').val().split(","))}
+                                            }
+
+                                        ]
+                                        }`;
+            console.log(data);
+
+            const ajax = $.ajax({
+                type: "POST",
+                url: "/api/AddDailyItems",
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    //alert(result);
+                    $('#datainput').slideToggle('slow');
+                    $('#datainputsuccess').slideToggle('slow');
+                },
+                failure: function (errMsg) {
+                    alert(errMsg);
+                }
+            });
+        }
+
+        function createGuid() {
+            function _p8(s) {
+                var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+                return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+            }
+            return _p8() + _p8(true) + _p8(true) + _p8();
+        }
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
