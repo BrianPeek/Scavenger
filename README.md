@@ -53,6 +53,10 @@ When you open the game in Unity, the [PlayFab SDK](https://api.playfab.com/sdks/
 
 To run the game in the Editor, select the Title scene in the `Scenes` folder and run the project. You can press "Start" to begin the game or "Leaderboards" where you can see the current leaderboard.  For best display, ensure you have set the editor to a Portrait display instead of Landscape (9:16 or 10:16 work best).
 
+## Presentations
+Learn more about the game and Azure integration from our session at [Build 2018](https://microsoft.com/build/):
+[![video](https://img.youtube.com/vi/xyZyjXluIV4/0.jpg)](https://www.youtube.com/watch?v=xyZyjXluIV4)
+
 ## Credits/Special Thanks
 
 * [Joey Buczek](https://github.com/joeybuczek) - Art
