@@ -11,6 +11,12 @@ namespace ScavengerServer
 {
 	class PlayFab
 	{
+		static PlayFab()
+		{
+			PlayFabSettings.DeveloperSecretKey = Environment.GetEnvironmentVariable("PlayFabKey");
+			PlayFabSettings.TitleId = Environment.GetEnvironmentVariable("PlayFabTitleID");
+		}
+
 		internal static async Task<string> AuthenticateUserAsync(HttpRequestMessage httpReq, TraceWriter log)
 		{
 			httpReq.Headers.TryGetValues("SessionTicket", out IEnumerable<string> headers);
@@ -26,9 +32,6 @@ namespace ScavengerServer
 
 			try
 			{
-				PlayFabSettings.DeveloperSecretKey = Environment.GetEnvironmentVariable("PlayFabKey");
-				PlayFabSettings.TitleId = Environment.GetEnvironmentVariable("PlayFabTitleID");
-
 				var resp = await PlayFabServerAPI.AuthenticateSessionTicketAsync(req);
 				return resp.Result.UserInfo.PlayFabId;
 			}
