@@ -55,7 +55,7 @@ To run the game in the Editor, select the Title scene in the `Scenes` folder and
 
 ## Presentations
 Learn more about the game and Azure integration from our session at [Build 2018](https://microsoft.com/build/):
-[![video](https://img.youtube.com/vi/xyZyjXluIV4/0.jpg)](https://www.youtube.com/watch?v=xyZyjXluIV4)
+[![video](https://img.youtube.com/vi/arikdfd8_A8/0.jpg)](https://www.youtube.com/watch?v=arikdfd8_A8)
 
 ## Credits/Special Thanks
 
