@@ -15,6 +15,7 @@ namespace PlayFab
     {
         static PlayFabAdminAPI() {}
 
+
         /// <summary>
         /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
         /// A new/fresh login will be required after calling this.
@@ -27,7 +28,7 @@ namespace PlayFab
         /// <summary>
         /// Abort an ongoing task instance.
         /// </summary>
-        public static void AbortTaskInstance(AbortTaskInstanceRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void AbortTaskInstance(AbortTaskInstanceRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -159,6 +160,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Removes a master player account entirely from all titles and deletes all associated data
+        /// </summary>
+        public static void DeleteMasterPlayerAccount(DeleteMasterPlayerAccountRequest request, Action<DeleteMasterPlayerAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Admin/DeleteMasterPlayerAccount", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Removes a user's player account from a title and deletes all associated data
         /// </summary>
         public static void DeletePlayer(DeletePlayerRequest request, Action<DeletePlayerResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -192,7 +203,7 @@ namespace PlayFab
         /// <summary>
         /// Delete a task.
         /// </summary>
-        public static void DeleteTask(DeleteTaskRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void DeleteTask(DeleteTaskRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -207,6 +218,16 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Admin/DeleteTitle", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Exports all associated data of a master player account
+        /// </summary>
+        public static void ExportMasterPlayerData(ExportMasterPlayerDataRequest request, Action<ExportMasterPlayerDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Admin/ExportMasterPlayerData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -321,6 +342,16 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Admin/GetMatchmakerGameModes", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Get the list of titles that the player has played
+        /// </summary>
+        public static void GetPlayedTitleList(GetPlayedTitleListRequest request, Action<GetPlayedTitleListResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Admin/GetPlayedTitleList", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -988,7 +1019,7 @@ namespace PlayFab
         /// <summary>
         /// Update an existing task.
         /// </summary>
-        public static void UpdateTask(UpdateTaskRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void UpdateTask(UpdateTaskRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 

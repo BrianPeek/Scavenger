@@ -15,28 +15,39 @@ using Ionic.Zlib;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabWww : IPlayFabHttp
+    public class PlayFabWww : IPlayFabTransportPlugin
     {
+        private bool _isInitialized = false;
         private int _pendingWwwMessages = 0;
-        public bool SessionStarted { get; set; }
         public string AuthKey { get; set; }
         public string EntityToken { get; set; }
 
-        public void InitializeHttp() { }
+        public bool IsInitialized { get { return _isInitialized; } }
+
+        public void Initialize()
+        {
+            _isInitialized = true;
+        }
+
         public void Update() { }
         public void OnDestroy() { }
 
         public void SimpleGetCall(string fullUrl, Action<byte[]> successCallback, Action<string> errorCallback)
         {
-            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, null, successCallback, errorCallback));
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("get", fullUrl, null, successCallback, errorCallback));
         }
 
-        public void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
+        public void SimplePutCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
-            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, payload, (result) => { successCallback(); }, errorCallback));
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("put", fullUrl, payload, successCallback, errorCallback));
         }
 
-        private static IEnumerator SimpleCallCoroutine(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        public void SimplePostCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("post", fullUrl, payload, successCallback, errorCallback));
+        }
+
+        private static IEnumerator SimpleCallCoroutine(string method, string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
             if (payload == null)
             {
@@ -49,23 +60,46 @@ namespace PlayFab.Internal
             }
             else
             {
-                var putRequest = UnityWebRequest.Put(fullUrl, payload);
-#if UNITY_2017_2_OR_NEWER
-                putRequest.SendWebRequest();
-#else
-                putRequest.Send();
-#endif
-                while (putRequest.uploadProgress < 1 && putRequest.downloadProgress < 1)
-                    yield return 1;
-                if (!string.IsNullOrEmpty(putRequest.error))
-                    errorCallback(putRequest.error);
+                UnityWebRequest request;
+                if (method == "put")
+                {
+                    request = UnityWebRequest.Put(fullUrl, payload);
+                }
                 else
-                    successCallback(null);
+                {
+                    var strPayload = System.Text.Encoding.UTF8.GetString(payload, 0, payload.Length);
+                    request = UnityWebRequest.Post(fullUrl, strPayload);
+                }
+
+#if UNITY_2017_2_OR_NEWER
+                request.chunkedTransfer = false; // can be removed after Unity's PUT will be more stable
+                request.SendWebRequest();
+#else
+                request.Send();
+#endif
+
+#if !UNITY_WEBGL
+                while (request.uploadProgress < 1 && request.downloadProgress < 1)
+                {
+                    yield return 1;
+                }
+#else
+                while (!request.isDone)
+                {
+                    yield return 1;
+                }
+#endif
+
+                if (!string.IsNullOrEmpty(request.error))
+                    errorCallback(request.error);
+                else
+                    successCallback(request.downloadHandler.data);
             }
         }
 
-        public void MakeApiCall(CallRequestContainer reqContainer)
+        public void MakeApiCall(object reqContainerObj)
         {
+            CallRequestContainer reqContainer = (CallRequestContainer)reqContainerObj;
             reqContainer.RequestHeaders["Content-Type"] = "application/json";
 
 #if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
@@ -76,7 +110,7 @@ namespace PlayFab.Internal
 
                 using (var stream = new MemoryStream())
                 {
-                    using (var zipstream = new GZipStream(stream, CompressionMode.Compress, CompressionLevel.BestCompression))
+                    using (var zipstream = new GZipStream(stream, CompressionMode.Compress, Ionic.Zlib.CompressionLevel.BestCompression))
                     {
                         zipstream.Write(reqContainer.Payload, 0, reqContainer.Payload.Length);
                     }
@@ -100,12 +134,13 @@ namespace PlayFab.Internal
 #if PLAYFAB_REQUEST_TIMING
                     var startTime = DateTime.UtcNow;
 #endif
-                    var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response);
+                    var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+                    var httpResult = serializer.DeserializeObject<HttpResponseObject>(response);
 
                     if (httpResult.code == 200)
                     {
                         // We have a good response from the server
-                        reqContainer.JsonResponse = JsonWrapper.SerializeObject(httpResult.data);
+                        reqContainer.JsonResponse = serializer.SerializeObject(httpResult.data);
                         reqContainer.DeserializeResultJson();
                         reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                         reqContainer.ApiResult.CustomData = reqContainer.CustomData;

@@ -16,6 +16,7 @@ namespace PlayFab
     {
         static PlayFabServerAPI() {}
 
+
         /// <summary>
         /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
         /// A new/fresh login will be required after calling this.
@@ -39,7 +40,7 @@ namespace PlayFab
         /// Adds the Friend user to the friendlist of the user with PlayFabId. At least one of
         /// FriendPlayFabId,FriendUsername,FriendEmail, or FriendTitleDisplayName should be initialized.
         /// </summary>
-        public static void AddFriend(AddFriendRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void AddFriend(AddFriendRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -142,25 +143,25 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Removes a user's player account from a title and deletes all associated data
+        /// </summary>
+        public static void DeletePlayer(DeletePlayerRequest request, Action<DeletePlayerResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/DeletePlayer", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Deletes a shared group, freeing up the shared group ID to be reused for a new group. Shared Groups are designed for
         /// sharing data between a very small number of players, please see our guide:
         /// https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
-        public static void DeleteSharedGroup(DeleteSharedGroupRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void DeleteSharedGroup(DeleteSharedGroupRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Server/DeleteSharedGroup", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Deletes the users for the provided game. Deletes custom data, all account linkages, and statistics.
-        /// </summary>
-        public static void DeleteUsers(DeleteUsersRequest request, Action<DeleteUsersResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            PlayFabHttp.MakeApiCall("/Server/DeleteUsers", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -198,9 +199,10 @@ namespace PlayFab
         {
         Action<ExecuteCloudScriptResult> wrappedResultCallback = (wrappedResult) =>
         {
-            var wrappedJson = JsonWrapper.SerializeObject(wrappedResult.FunctionResult);
+            var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+            var wrappedJson = serializer.SerializeObject(wrappedResult.FunctionResult);
             try {
-                wrappedResult.FunctionResult = JsonWrapper.DeserializeObject<TOut>(wrappedJson);
+                wrappedResult.FunctionResult = serializer.DeserializeObject<TOut>(wrappedJson);
             }
             catch (Exception)
             {
@@ -382,8 +384,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Returns whatever info is requested in the response for the user. Note that PII (like email address, facebook id)
-        /// may be returned. All parameters default to false.
+        /// Returns whatever info is requested in the response for the user. Note that PII (like email address, facebook id) may be
+        /// returned. All parameters default to false.
         /// </summary>
         public static void GetPlayerCombinedInfo(GetPlayerCombinedInfoRequest request, Action<GetPlayerCombinedInfoResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -466,6 +468,26 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of Facebook Instant Games identifiers.
+        /// </summary>
+        public static void GetPlayFabIDsFromFacebookInstantGamesIds(GetPlayFabIDsFromFacebookInstantGamesIdsRequest request, Action<GetPlayFabIDsFromFacebookInstantGamesIdsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetPlayFabIDsFromFacebookInstantGamesIds", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of Nintendo Switch Device identifiers.
+        /// </summary>
+        public static void GetPlayFabIDsFromNintendoSwitchDeviceIds(GetPlayFabIDsFromNintendoSwitchDeviceIdsRequest request, Action<GetPlayFabIDsFromNintendoSwitchDeviceIdsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetPlayFabIDsFromNintendoSwitchDeviceIds", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Retrieves the unique PlayFab identifiers for the given set of Steam identifiers. The Steam identifiers are the profile
         /// IDs for the user accounts, available as SteamId in the Steamworks Community API calls.
         /// </summary>
@@ -474,6 +496,16 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Server/GetPlayFabIDsFromSteamIDs", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of XboxLive identifiers.
+        /// </summary>
+        public static void GetPlayFabIDsFromXboxLiveIDs(GetPlayFabIDsFromXboxLiveIDsRequest request, Action<GetPlayFabIDsFromXboxLiveIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetPlayFabIDsFromXboxLiveIDs", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -495,6 +527,16 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Server/GetRandomResultTables", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Retrieves the associated PlayFab account identifiers for the given set of server custom identifiers.
+        /// </summary>
+        public static void GetServerCustomIDsFromPlayFabIDs(GetServerCustomIDsFromPlayFabIDsRequest request, Action<GetServerCustomIDsFromPlayFabIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetServerCustomIDsFromPlayFabIDs", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -681,6 +723,38 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Links the Xbox Live account associated with the provided access code to the user's PlayFab account
+        /// </summary>
+        public static void LinkXboxAccount(LinkXboxAccountRequest request, Action<LinkXboxAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/LinkXboxAccount", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Securely login a game client from an external server backend using a custom identifier for that player. Server Custom ID
+        /// and Client Custom ID are mutually exclusive and cannot be used to retrieve the same player account.
+        /// </summary>
+        public static void LoginWithServerCustomId(LoginWithServerCustomIdRequest request, Action<ServerLoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/LoginWithServerCustomId", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Signs the user in using a Xbox Live Token from an external server backend, returning a session identifier that can
+        /// subsequently be used for API calls which require an authenticated user
+        /// </summary>
+        public static void LoginWithXbox(LoginWithXboxRequest request, Action<ServerLoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/LoginWithXbox", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Modifies the number of remaining uses of a player's inventory item
         /// </summary>
         public static void ModifyItemUses(ModifyItemUsesRequest request, Action<ModifyItemUsesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -774,7 +848,7 @@ namespace PlayFab
         /// <summary>
         /// Removes the specified friend from the the user's friend list
         /// </summary>
-        public static void RemoveFriend(RemoveFriendRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void RemoveFriend(RemoveFriendRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -890,7 +964,7 @@ namespace PlayFab
         /// <summary>
         /// Updates the tag list for a specified user in the friend list of another user
         /// </summary>
-        public static void SetFriendTags(SetFriendTagsRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void SetFriendTags(SetFriendTagsRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -991,6 +1065,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Unlinks the related Xbox Live account from the user's PlayFab account
+        /// </summary>
+        public static void UnlinkXboxAccount(UnlinkXboxAccountRequest request, Action<UnlinkXboxAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/UnlinkXboxAccount", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Opens a specific container (ContainerItemInstanceId), with a specific key (KeyItemInstanceId, when required), and
         /// returns the contents of the opened container. If the container (and key when relevant) are consumable (RemainingUses >
         /// 0), their RemainingUses will be decremented, consistent with the operation of ConsumeItem.
@@ -1018,7 +1102,7 @@ namespace PlayFab
         /// <summary>
         /// Update the avatar URL of the specified player
         /// </summary>
-        public static void UpdateAvatarUrl(UpdateAvatarUrlRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void UpdateAvatarUrl(UpdateAvatarUrlRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -1122,7 +1206,7 @@ namespace PlayFab
         /// <summary>
         /// Updates the key-value pair data tagged to the specified item, which is read-only from the client.
         /// </summary>
-        public static void UpdateUserInventoryItemCustomData(UpdateUserInventoryItemDataRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void UpdateUserInventoryItemCustomData(UpdateUserInventoryItemDataRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 

@@ -5,6 +5,13 @@ using PlayFab.SharedModels;
 
 namespace PlayFab.MatchmakerModels
 {
+    /// <summary>
+    /// This API allows the external match-making service to confirm that the user has a valid Session Ticket for the title, in
+    /// order
+    /// to securely enable match-making. The client passes the user's Session Ticket to the external match-making service, which
+    /// then passes the Session Ticket in as the
+    /// AuthorizationTicket in this call.
+    /// </summary>
     [Serializable]
     public class AuthUserRequest : PlayFabRequestCommon
     {
@@ -25,20 +32,6 @@ namespace PlayFab.MatchmakerModels
         /// PlayFab unique identifier of the account that has been authorized.
         /// </summary>
         public string PlayFabId;
-    }
-
-    [Serializable]
-    public class DeregisterGameRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// Unique identifier for the Game Server Instance that is being deregistered.
-        /// </summary>
-        public string LobbyId;
-    }
-
-    [Serializable]
-    public class DeregisterGameResponse : PlayFabResultCommon
-    {
     }
 
     /// <summary>
@@ -163,55 +156,6 @@ namespace PlayFab.MatchmakerModels
     }
 
     [Serializable]
-    public class RegisterGameRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// Unique identifier of the build running on the Game Server Instance.
-        /// </summary>
-        public string Build;
-        /// <summary>
-        /// Game Mode the Game Server instance is running. Note that this must be defined in the Game Modes tab in the PlayFab Game
-        /// Manager, along with the Build ID (the same Game Mode can be defined for multiple Build IDs).
-        /// </summary>
-        public string GameMode;
-        /// <summary>
-        /// Previous lobby id if re-registering an existing game.
-        /// </summary>
-        public string LobbyId;
-        /// <summary>
-        /// Region in which the Game Server Instance is running. For matchmaking using non-AWS region names, set this to any AWS
-        /// region and use Tags (below) to specify your custom region.
-        /// </summary>
-        public Region Region;
-        /// <summary>
-        /// IPV4 address of the Game Server Instance.
-        /// </summary>
-        public string ServerHost;
-        /// <summary>
-        /// IPV6 address of the Game Server Instance.
-        /// </summary>
-        public string ServerIPV6Address;
-        /// <summary>
-        /// Port number for communication with the Game Server Instance.
-        /// </summary>
-        public string ServerPort;
-        /// <summary>
-        /// Tags for the Game Server Instance
-        /// </summary>
-        public Dictionary<string,string> Tags;
-    }
-
-    [Serializable]
-    public class RegisterGameResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// Unique identifier generated for the Game Server Instance that is registered. If LobbyId is specified in request and the
-        /// game still exists in PlayFab, the LobbyId in request is returned. Otherwise a new lobby id will be returned.
-        /// </summary>
-        public string LobbyId;
-    }
-
-    [Serializable]
     public class StartGameRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -246,9 +190,9 @@ namespace PlayFab.MatchmakerModels
         /// </summary>
         public string GameID;
         /// <summary>
-        /// IPV4 address of the new Game Server Instance.
+        /// IPV4 address of the server
         /// </summary>
-        public string ServerHostname;
+        public string ServerIPV4Address;
         /// <summary>
         /// IPV6 address of the new Game Server Instance.
         /// </summary>
@@ -257,6 +201,10 @@ namespace PlayFab.MatchmakerModels
         /// Port number for communication with the Game Server Instance.
         /// </summary>
         public uint ServerPort;
+        /// <summary>
+        /// Public DNS name (if any) of the server
+        /// </summary>
+        public string ServerPublicDNSName;
     }
 
     [Serializable]
