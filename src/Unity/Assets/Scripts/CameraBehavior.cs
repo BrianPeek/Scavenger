@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using Microsoft.ProjectOxford.Vision;
-using Microsoft.ProjectOxford.Vision.Contract;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -51,16 +51,17 @@ public class CameraBehavior : MonoBehaviour
 				MemoryStream ms = new MemoryStream(pngBuff);
 
 				// call the vision service and get the image analysis
-				VisionServiceClient client = new VisionServiceClient(Globals.VisionKey, Globals.VisionEndpoint);
-				AnalysisResult result = await client.DescribeAsync(ms);
+				ComputerVisionClient client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(Globals.VisionKey), new DelegatingHandler[] { });
+				client.Endpoint = Globals.VisionEndpoint;
+				ImageDescription result = await client.DescribeImageInStreamAsync(ms);
 
 				// send the tag list to the debug log
-				string tags = result.Description.Tags.Aggregate((x, y) => $"{x}, {y}");
+				string tags = result.Tags.Aggregate((x, y) => $"{x}, {y}");
 				Debug.Log(tags);
 
 				foreach(string itemTag in Globals.CurrentItem.Tags)
 				{
-					if(result.Description.Tags.Contains(itemTag.ToLower()))
+					if(result.Tags.Contains(itemTag.ToLower()))
 					{
 						audioSource.PlayOneShot(clipFound);
 						textmesh.text = "You found it!";

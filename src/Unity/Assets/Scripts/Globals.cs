@@ -7,7 +7,7 @@ public class Globals
 
 	// replace with your own key and endpoint
 	public static string VisionKey = "9c41596b4b2d47f8bc2e5b6f0e6baef9";
-	public static string VisionEndpoint = "http://eastus.api.cognitive.microsoft.com/vision/v1.0";
+	public static string VisionEndpoint = "https://eastus.api.cognitive.microsoft.com";
 
 	static Globals()
 	{
