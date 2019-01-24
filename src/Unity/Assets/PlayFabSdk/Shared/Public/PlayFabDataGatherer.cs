@@ -47,7 +47,6 @@ namespace PlayFab
 
         //DEVICE & OS
         public string DeviceModel;
-        public string DeviceName;
         //public enum DeviceType { Unknown, Handheld, Console, Desktop }
         public DeviceType DeviceType;
         public string DeviceUniqueId;
@@ -100,7 +99,6 @@ namespace PlayFab
 
             //DEVICE & OS
             DeviceModel = SystemInfo.deviceModel;
-            DeviceName = SystemInfo.deviceName;
             DeviceType = SystemInfo.deviceType;
 
             DeviceUniqueId = PlayFabSettings.DeviceUniqueIdentifier;
@@ -115,7 +113,9 @@ namespace PlayFab
             //SYSTEM INFO
             SystemMemorySize = SystemInfo.systemMemorySize;
             ProcessorCount = SystemInfo.processorCount;
-            //ProcessorFrequency = SystemInfo.processorFrequency; //Not Supported in PRE Unity 5_2
+#if UNITY_5_3_OR_NEWER
+            ProcessorFrequency = SystemInfo.processorFrequency; // Not Supported in PRE Unity 5_2
+#endif
             ProcessorType = SystemInfo.processorType;
             SupportsAccelerometer = SystemInfo.supportsAccelerometer;
             SupportsGyroscope = SystemInfo.supportsGyroscope;

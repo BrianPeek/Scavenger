@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Name: PlayFabSharedSettings
   m_EditorClassIdentifier: 
   TitleId: A246
+  VerticalName: 
   DeveloperSecretKey: 598OQYBF5DJD9XQUBBF5E89EXFDHNAXR389NUB5QND6AETFQRH
-  ProductionEnvironmentUrl: .playfabapi.com
+  ProductionEnvironmentUrl: 
   RequestType: 2
   RequestTimeout: 2000
   RequestKeepAlive: 1

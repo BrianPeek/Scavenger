@@ -25,19 +25,30 @@ namespace PlayFab.PlayStreamModels
     public class EntityCreatedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
+    }
+    public class EntityExecutedCloudScriptEventData : PlayStreamEventBase
+    {
+        public ExecuteCloudScriptResult CloudScriptExecutionResult;
+        public string EntityChain;
+        public EntityLineage EntityLineage;
+        public string FunctionName;
     }
     public class EntityFilesSetEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public List<FileSet> Files;
     }
     public class EntityLoggedInEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
     }
     public class EntityObjectsSetEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public List<ObjectSet> Objects;
     }
     public class GroupCreatedEventData : PlayStreamEventBase
@@ -45,6 +56,7 @@ namespace PlayFab.PlayStreamModels
         public string CreatorEntityId;
         public string CreatorEntityType;
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
     }
     public class GroupDeletedEventData : PlayStreamEventBase
@@ -52,11 +64,13 @@ namespace PlayFab.PlayStreamModels
         public string DeleterEntityId;
         public string DeleterEntityType;
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
     }
     public class GroupMembersAddedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public List<Member> Members;
         public string RoleId;
@@ -65,6 +79,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupMembersRemovedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public List<Member> Members;
     }
@@ -73,6 +88,7 @@ namespace PlayFab.PlayStreamModels
         public string CreatorEntityId;
         public string CreatorEntityType;
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public string RoleId;
         public string RoleName;
@@ -82,6 +98,7 @@ namespace PlayFab.PlayStreamModels
         public string DeleterEntityId;
         public string DeleterEntityType;
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public string RoleId;
         public string RoleName;
@@ -89,6 +106,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupRoleMembersAddedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public List<Member> Members;
         public string RoleId;
@@ -97,6 +115,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupRoleMembersRemovedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public List<Member> Members;
         public string RoleId;
@@ -105,6 +124,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupRoleUpdatedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public RolePropertyValues NewValues;
         public RolePropertyValues OldValues;
@@ -116,6 +136,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupUpdatedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public GroupPropertyValues NewValues;
         public GroupPropertyValues OldValues;
@@ -361,6 +382,13 @@ namespace PlayFab.PlayStreamModels
     {
         public DateTime Created;
         public string PublisherId;
+        public string TitleId;
+    }
+    public class PlayerDataExportedEventData : PlayStreamEventBase
+    {
+        public string ExportDownloadUrl;
+        public string JobReceiptId;
+        public DateTime RequestTime;
         public string TitleId;
     }
     public class PlayerDisplayNameChangedEventData : PlayStreamEventBase
@@ -783,6 +811,13 @@ namespace PlayFab.PlayStreamModels
         public string GraphUrl;
         public AlertLevel? Level;
     }
+    public class TitleHopperConfigUpdatedEventData : PlayStreamEventBase
+    {
+        public bool Deleted;
+        public string DeveloperId;
+        public string MatchHopperId;
+        public string UserId;
+    }
     public class TitleInitiatedPlayerPasswordResetEventData : PlayStreamEventBase
     {
         public string DeveloperId;
@@ -947,6 +982,118 @@ namespace PlayFab.PlayStreamModels
         /// The unique storage path for this set operation.
         /// </summary>
         public string StoragePath;
+    }
+
+    [Serializable]
+    public class EntityLineage
+    {
+        /// <summary>
+        /// The Character Id of the associated entity.
+        /// </summary>
+        public string CharacterId;
+        /// <summary>
+        /// The Group Id of the associated entity.
+        /// </summary>
+        public string GroupId;
+        /// <summary>
+        /// The Master Player Account Id of the associated entity.
+        /// </summary>
+        public string MasterPlayerAccountId;
+        /// <summary>
+        /// The Namespace Id of the associated entity.
+        /// </summary>
+        public string NamespaceId;
+        /// <summary>
+        /// The Title Id of the associated entity.
+        /// </summary>
+        public string TitleId;
+        /// <summary>
+        /// The Title Player Account Id of the associated entity.
+        /// </summary>
+        public string TitlePlayerAccountId;
+    }
+
+    [Serializable]
+    public class LogStatement
+    {
+        /// <summary>
+        /// Optional object accompanying the message as contextual information
+        /// </summary>
+        public object Data;
+        /// <summary>
+        /// 'Debug', 'Info', or 'Error'
+        /// </summary>
+        public string Level;
+        public string Message;
+    }
+
+    [Serializable]
+    public class ScriptExecutionError
+    {
+        /// <summary>
+        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded,
+        /// CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
+        /// </summary>
+        public string Error;
+        /// <summary>
+        /// Details about the error
+        /// </summary>
+        public string Message;
+        /// <summary>
+        /// Point during the execution of the script at which the error occurred, if any
+        /// </summary>
+        public string StackTrace;
+    }
+
+    [Serializable]
+    public class ExecuteCloudScriptResult
+    {
+        /// <summary>
+        /// Number of PlayFab API requests issued by the CloudScript function
+        /// </summary>
+        public int APIRequestsIssued;
+        /// <summary>
+        /// Information about the error, if any, that occurred during execution
+        /// </summary>
+        public ScriptExecutionError Error;
+        public double ExecutionTimeSeconds;
+        /// <summary>
+        /// The name of the function that executed
+        /// </summary>
+        public string FunctionName;
+        /// <summary>
+        /// The object returned from the CloudScript function, if any
+        /// </summary>
+        public object FunctionResult;
+        /// <summary>
+        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event. This only occurs if
+        /// the total event size is larger than 350KB.
+        /// </summary>
+        public bool? FunctionResultTooLarge;
+        /// <summary>
+        /// Number of external HTTP requests issued by the CloudScript function
+        /// </summary>
+        public int HttpRequestsIssued;
+        /// <summary>
+        /// Entries logged during the function execution. These include both entries logged in the function code using log.info()
+        /// and log.error() and error entries for API and HTTP request failures.
+        /// </summary>
+        public List<LogStatement> Logs;
+        /// <summary>
+        /// Flag indicating if the logs were too large and were subsequently dropped from this event. This only occurs if the total
+        /// event size is larger than 350KB after the FunctionResult was removed.
+        /// </summary>
+        public bool? LogsTooLarge;
+        public uint MemoryConsumedBytes;
+        /// <summary>
+        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP
+        /// requests.
+        /// </summary>
+        public double ProcessorTimeSeconds;
+        /// <summary>
+        /// The revision of the CloudScript that executed
+        /// </summary>
+        public int Revision;
     }
 
     [Serializable]
@@ -1327,89 +1474,6 @@ namespace PlayFab.PlayStreamModels
         ZAR,
         ZMW,
         ZWD
-    }
-
-    [Serializable]
-    public class LogStatement
-    {
-        /// <summary>
-        /// Optional object accompanying the message as contextual information
-        /// </summary>
-        public object Data;
-        /// <summary>
-        /// 'Debug', 'Info', or 'Error'
-        /// </summary>
-        public string Level;
-        public string Message;
-    }
-
-    [Serializable]
-    public class ScriptExecutionError
-    {
-        /// <summary>
-        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded,
-        /// CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
-        /// </summary>
-        public string Error;
-        /// <summary>
-        /// Details about the error
-        /// </summary>
-        public string Message;
-        /// <summary>
-        /// Point during the execution of the script at which the error occurred, if any
-        /// </summary>
-        public string StackTrace;
-    }
-
-    [Serializable]
-    public class ExecuteCloudScriptResult
-    {
-        /// <summary>
-        /// Number of PlayFab API requests issued by the CloudScript function
-        /// </summary>
-        public int APIRequestsIssued;
-        /// <summary>
-        /// Information about the error, if any, that occurred during execution
-        /// </summary>
-        public ScriptExecutionError Error;
-        public double ExecutionTimeSeconds;
-        /// <summary>
-        /// The name of the function that executed
-        /// </summary>
-        public string FunctionName;
-        /// <summary>
-        /// The object returned from the CloudScript function, if any
-        /// </summary>
-        public object FunctionResult;
-        /// <summary>
-        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event. This only occurs if
-        /// the total event size is larger than 350KB.
-        /// </summary>
-        public bool? FunctionResultTooLarge;
-        /// <summary>
-        /// Number of external HTTP requests issued by the CloudScript function
-        /// </summary>
-        public int HttpRequestsIssued;
-        /// <summary>
-        /// Entries logged during the function execution. These include both entries logged in the function code using log.info()
-        /// and log.error() and error entries for API and HTTP request failures.
-        /// </summary>
-        public List<LogStatement> Logs;
-        /// <summary>
-        /// Flag indicating if the logs were too large and were subsequently dropped from this event. This only occurs if the total
-        /// event size is larger than 350KB after the FunctionResult was removed.
-        /// </summary>
-        public bool? LogsTooLarge;
-        public uint MemoryConsumedBytes;
-        /// <summary>
-        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP
-        /// requests.
-        /// </summary>
-        public double ProcessorTimeSeconds;
-        /// <summary>
-        /// The revision of the CloudScript that executed
-        /// </summary>
-        public int Revision;
     }
 
     public enum ContinentCode
@@ -1895,7 +1959,13 @@ namespace PlayFab.PlayStreamModels
     [Serializable]
     public class NameIdentifier
     {
+        /// <summary>
+        /// Id Identifier, if present
+        /// </summary>
         public string Id;
+        /// <summary>
+        /// Name Identifier, if present
+        /// </summary>
         public string Name;
     }
 
@@ -2080,7 +2150,9 @@ namespace PlayFab.PlayStreamModels
         BackEnd,
         GameClient,
         GameServer,
-        Partner
+        Partner,
+        Custom,
+        API
     }
 
     [Serializable]

@@ -9,15 +9,17 @@ using UnityEngine.Networking;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabUnityHttp : IPlayFabHttp
+    public class PlayFabUnityHttp : IPlayFabTransportPlugin
     {
+        private bool _isInitialized = false;
         private readonly int _pendingWwwMessages = 0;
 
-        public bool SessionStarted { get; set; }
         public string AuthKey { get; set; }
         public string EntityToken { get; set; }
 
-        public void InitializeHttp() { }
+        public bool IsInitialized { get { return _isInitialized; } }
+
+        public void Initialize() { _isInitialized = true; }
 
         public void Update() { }
 
@@ -25,48 +27,75 @@ namespace PlayFab.Internal
 
         public void SimpleGetCall(string fullUrl, Action<byte[]> successCallback, Action<string> errorCallback)
         {
-            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, null, successCallback, errorCallback));
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("get", fullUrl, null, successCallback, errorCallback));
         }
 
-        public void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
+        public void SimplePutCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
-            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, payload, (result) => { successCallback(); }, errorCallback));
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("put",fullUrl, payload, successCallback, errorCallback));
         }
 
-        private static IEnumerator SimpleCallCoroutine(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        public void SimplePostCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("post", fullUrl, payload, successCallback, errorCallback));
+        }
+
+        private static IEnumerator SimpleCallCoroutine(string method, string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
             if (payload == null)
             {
-                var www = new UnityWebRequest(fullUrl)
+                using (UnityWebRequest www = UnityWebRequest.Get(fullUrl))
                 {
-                    downloadHandler = new DownloadHandlerBuffer(),
-                    method = "POST"
+#if UNITY_2017_2_OR_NEWER
+                    yield return www.SendWebRequest();
+#else
+                    yield return www.Send();
+#endif
+
+                    if (!string.IsNullOrEmpty(www.error))
+                        errorCallback(www.error);
+                    else
+                        successCallback(www.downloadHandler.data);
                 };
-                yield return www;
-                if (!string.IsNullOrEmpty(www.error))
-                    errorCallback(www.error);
-                else
-                    successCallback(www.downloadHandler.data);
             }
             else
             {
-                var putRequest = UnityWebRequest.Put(fullUrl, payload);
-#if UNITY_2017_2_OR_NEWER
-                putRequest.SendWebRequest();
-#else
-                putRequest.Send();
-#endif
-                while (putRequest.uploadProgress < 1 && putRequest.downloadProgress < 1)
-                    yield return 1;
-                if (!string.IsNullOrEmpty(putRequest.error))
-                    errorCallback(putRequest.error);
+
+                UnityWebRequest request;
+                if (method == "put")
+                {
+                    request = UnityWebRequest.Put(fullUrl, payload);
+                }
                 else
-                    successCallback(null);
+                {
+                    request = new UnityWebRequest(fullUrl, "POST");
+                    request.uploadHandler = (UploadHandler)new UploadHandlerRaw(payload);
+                    request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+                    request.SetRequestHeader("Content-Type", "application/json");
+                }
+
+
+#if UNITY_2017_2_OR_NEWER
+                request.chunkedTransfer = false; // can be removed after Unity's PUT will be more stable
+                yield return request.SendWebRequest();
+#else
+                yield return request.Send();
+#endif
+
+                if (request.isNetworkError || request.isHttpError)
+                {
+                    errorCallback(request.error);
+                }
+                else
+                {
+                    successCallback(request.downloadHandler.data);
+                }
             }
         }
 
-        public void MakeApiCall(CallRequestContainer reqContainer)
+        public void MakeApiCall(object reqContainerObj)
         {
+            CallRequestContainer reqContainer = (CallRequestContainer)reqContainerObj;
             reqContainer.RequestHeaders["Content-Type"] = "application/json";
 
 #if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
@@ -106,7 +135,12 @@ namespace PlayFab.Internal
             };
 
             foreach (var headerPair in reqContainer.RequestHeaders)
-                www.SetRequestHeader(headerPair.Key, headerPair.Value);
+            {
+                if (!string.IsNullOrEmpty(headerPair.Key) && !string.IsNullOrEmpty(headerPair.Value))
+                    www.SetRequestHeader(headerPair.Key, headerPair.Value);
+                else
+                    Debug.LogWarning("Null header: " + headerPair.Key + " = " + headerPair.Value);
+            }
 
 #if UNITY_2017_2_OR_NEWER
             yield return www.SendWebRequest();
@@ -155,7 +189,7 @@ namespace PlayFab.Internal
                                 var jsonResponse = streamReader.ReadToEnd();
                                 //Debug.Log(jsonResponse);
                                 OnResponse(jsonResponse, reqContainer);
-                                Debug.Log("Successful UnityHttp decompress for: " + www.url);
+                                //Debug.Log("Successful UnityHttp decompress for: " + www.url);
                             }
                         }
                     }
@@ -185,12 +219,13 @@ namespace PlayFab.Internal
 #if PLAYFAB_REQUEST_TIMING
                 var startTime = DateTime.UtcNow;
 #endif
-                var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response);
+                var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+                var httpResult = serializer.DeserializeObject<HttpResponseObject>(response);
 
                 if (httpResult.code == 200)
                 {
                     // We have a good response from the server
-                    reqContainer.JsonResponse = JsonWrapper.SerializeObject(httpResult.data);
+                    reqContainer.JsonResponse = serializer.SerializeObject(httpResult.data);
                     reqContainer.DeserializeResultJson();
                     reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                     reqContainer.ApiResult.CustomData = reqContainer.CustomData;
