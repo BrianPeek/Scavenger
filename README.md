@@ -16,12 +16,12 @@ Scavenger is a game written in Unity for a session presented at [Microsoft Build
 
 The game plays as follows:
 
-* Player opens the game on her mobile device
-* If the player hasn't logged in previously, they will create a new name to identify them for the leaderboard
-* At this point the player can view the current leaderboard or start playing
+* Player opens the game on their mobile device
+* If the player hasn't logged in previously, they will be asked to create a new name to identify themselves for the leaderboard
+* At this point, the player can view the current leaderboard or start playing
 * If the player starts the game, they are presented with 5 ordinary (or not!) items to take a picture of
-* The player taps one of these items, and then snaps a photo of the item
-* The Computer Vision Cognitive Services is triggered to recognize the object in the photo
+* The player selects an item, and then snaps a photo
+* The Computer Vision Cognitive Service is triggered to recognize the object in the photo
 * If the object is found in the picture, a point is awarded!
 * Once all 5 objects are "found", the player has completed the day's challenge, and five new objects will be available the next day
 
