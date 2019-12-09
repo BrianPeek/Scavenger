@@ -47,7 +47,7 @@ Most importantly, in order for the Functions Proxy to work, you should modify th
 
 ## Running the game
 
-The game requires [Unity 2018.2](https://unity3d.com/) to build and run, however earlier or later versions MAY work.  Once you have it installed, open the `src/Unity` folder which contains the game code. If you want to test the project in the Editor, you should be running the Functions project locally (check previous paragraph for details). Feel free to modify this behavior in the `Globals.cs` file.
+The game requires [Unity 2018.2](https://unity3d.com/get-unity/download/archive) to build and run, however earlier or later versions MAY work.  Once you have it installed, open the `src/Unity` folder which contains the game code. If you want to test the project in the Editor, you should be running the Functions project locally (check previous paragraph for details). Feel free to modify this behavior in the `Globals.cs` file.
 
 When you open the game in Unity, the [PlayFab SDK](https://api.playfab.com/sdks/unity) is already installed. You should configure it to access your PlayFab data (Studio etc.) by navigating to the **Window > PlayFab > Editor Extensions** menu item. This will open a small window where you sign in with your PlayFab account. After that, you need to configure the game to work with your PlayFab game by modifying the values in the **PlayFab Editor Extensions** window. If the PlayFab sign in worked, you'll be able to easily select your **Studio** and **Title**.
 
